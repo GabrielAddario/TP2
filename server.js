@@ -35,7 +35,7 @@ class Server {
         if (this.persistencia === 'MONGODB') {
             await CnxMongoDB.conectar();
         }
-
+        
         const PORT = 8080;
         this.server = this.app.listen(PORT, () => console.log(`Servidor express escuchando en http://localhost:${PORT}`));
 

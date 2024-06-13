@@ -8,15 +8,17 @@ class TokenController {
     login = async (req, res) => {
         try {
             const { username, password } = req.body;
+
             if (username === 'helloWorld' && password === 'canchaDeFutbol') {
                 const token = this.generateToken({ username });
-                let fecha = new Date().toDateString();
-                res.json({ token: "Bearer "+token, create: fecha, duracion: "1HS" });
+                const fecha = new Date().toISOString();
+                res.json({ token: `Bearer ${token}`, created: fecha, duration: "1h" });
             } else {
                 res.status(401).json({ code: 401, message: "Unauthorized", moreInformation: 'Usuario o contraseña incorrectos' });
             }
         } catch (error) {
-            console.log("ERROR: en login() " + error.message)
+            console.error("ERROR: en login() " + error.message);
+            res.status(500).json({ code: 500, message: "Internal Server Error", moreInformation: error.message });
         }
     }
 
@@ -24,22 +26,20 @@ class TokenController {
         return jwt.sign(payload, this.secretKey, options);
     }
 
-    verifyToken(token) {
-        try {
-            return jwt.verify(token, this.secretKey);
-        } catch (err) {
-            throw new Error('Invalid token');
-        }
-    }
-
-    authenticateToken(req, res, next) {
+    authenticateToken = (req, res, next) => {
         const authHeader = req.headers['authorization'];
         const token = authHeader && authHeader.split(' ')[1];
 
-        if (token == null) return res.sendStatus(401);
+        if (token == null) {
+            console.log('No token provided');
+            return res.sendStatus(401);
+        }
 
         jwt.verify(token, this.secretKey, (err, user) => {
-            if (err) return res.sendStatus(403);
+            if (err) {
+                console.log('JWT verification error:', err); 
+                return res.sendStatus(403);
+            }
             req.user = user;
             next();
         });
