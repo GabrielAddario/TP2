@@ -1,0 +1,29 @@
+{
+  "type": "module",
+  "name": "canchafutbol",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "keywords": [],
+  "author": "GA",
+  "license": "MIT",
+  "dependencies": {
+    "@faker-js/faker": "^8.3.1",
+    "axios": "^1.6.2",
+    "chai": "^4.3.10",
+    "dotenv": "^16.3.1",
+    "express": "^4.19.2",
+    "joi": "^17.11.0",
+    "jsonwebtoken": "^9.0.2",
+    "mocha": "^10.2.0",
+    "mongodb": "^6.2.0",
+    "node-fetch": "^3.3.2",
+    "supertest": "^6.3.3"
+  }
+}
